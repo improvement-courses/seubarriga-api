@@ -8,3 +8,10 @@ test('Deve listar todos os usuários', () => request(app).get('/users')
     expect(res.body).toHaveLength(1);
     expect(res.body[0]).toHaveProperty('name', 'John Doe');
   }));
+
+test('Deve inserir usuário com sucesso', () => request(app).post('/users')
+  .send({ name: 'Williams Gomes', email: 'williams.gomes@gmail.com' })
+  .then((res) => {
+    expect(res.status).toBe(201);
+    expect(res.body.name).toBe('Williams Gomes');
+  }));
