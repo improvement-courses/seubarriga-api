@@ -5,8 +5,11 @@ module.exports = (app) => {
   const update = (id, account) => app.db('accounts')
     .where({ id })
     .update(account, '*');
+  const remove = id => app.db('accounts')
+    .where({ id })
+    .del();
 
   return {
-    save, findAll, findById, update,
+    save, findAll, findById, update, remove,
   };
 };
