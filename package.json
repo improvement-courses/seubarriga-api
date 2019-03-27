@@ -7,7 +7,10 @@
     "start": "node src/server.js",
     "test": "jest",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watch --verbose=true"
+    "secure-mode": "jest --watch --verbose=true",
+    "mig-m": "knex migrate:make --env test",
+    "mig-l": "knex migrate:latest --env test",
+    "mig-r": "knex migrate:rollback --env test"
   },
   "keywords": [],
   "author": "",
