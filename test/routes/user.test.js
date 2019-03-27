@@ -10,7 +10,7 @@ test('Deve listar todos os usuários', () => request(app).get('/users')
 
 test('Deve inserir usuário com sucesso', () => {
   const email = `${Date.now()}@gmail.com`;
-  request(app).post('/users')
+  return request(app).post('/users')
     .send({ name: 'Williams Gomes', email, password: '123456' })
     .then((res) => {
       expect(res.status).toBe(201);
