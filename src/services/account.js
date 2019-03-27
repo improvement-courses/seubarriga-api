@@ -1,4 +1,5 @@
 module.exports = (app) => {
   const save = account => app.db('accounts').insert(account, '*');
-  return { save };
+  const findAll = () => app.db('accounts').select();
+  return { save, findAll };
 };

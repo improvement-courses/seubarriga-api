@@ -4,5 +4,6 @@ module.exports = (app) => {
     .post(app.routes.users.create);
 
   app.route('/accounts')
-    .post(app.routes.accounts.create);
+    .post(app.routes.accounts.create)
+    .get(app.routes.accounts.getAll);
 };
