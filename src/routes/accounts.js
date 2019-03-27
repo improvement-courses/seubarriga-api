@@ -9,5 +9,13 @@ module.exports = (app) => {
       .then(result => res.status(200).json(result));
   };
 
-  return { create, getAll };
+  const get = (req, res) => {
+    console.log(req.body);
+    console.log(req.params);
+    console.log(req.query);
+    app.services.account.findById({ id: req.params.id })
+      .then(result => res.status(200).json(result));
+  };
+
+  return { create, getAll, get };
 };
