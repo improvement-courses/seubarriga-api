@@ -31,3 +31,8 @@ test('Não deve autenticar usuário que não existe', () => request(app).post('/
     expect(res.status).toBe(400);
     expect(res.body.error).toBe('Usuário ou senha inválidos');
   }));
+
+test('Não deve acessar uma rota protegida sem token', () => request(app).get('/users')
+  .then((resp) => {
+    expect(resp.status).toBe(401);
+  }));
