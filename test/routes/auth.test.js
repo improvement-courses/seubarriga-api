@@ -1,14 +1,33 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
-const email = `${Date.now()}@gmail.com`;
-const user = { name: 'Williams Gomes Silva', email, password: '123456' };
+test('Deve receber token ao logar', () => {
+  const email = `${Date.now()}@gmail.com`;
+  const user = { name: 'Williams Gomes Silva', email, password: '123456' };
+  return app.services.user.save(user)
+    .then(() => request(app).post('/auth/signin')
+      .send({ email, password: '123456' }))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('token');
+    });
+});
 
-test('Deve receber token ao logar', () => app.services.user.save(user)
-  .then(() => request(app).post('/auth/signin')
-    .send({ email, password: '123456' }))
+test('Não deve autenticar usuário com senha errada', () => {
+  const email = `${Date.now()}@gmail.com`;
+  const user = { name: 'Williams Barriquero Gomes Silva', email, password: '123456' };
+  return app.services.user.save(user)
+    .then(() => request(app).post('/auth/signin')
+      .send({ email, password: '123465' }))
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('Usuário ou senha inválidos');
+    });
+});
+
+test('Não deve autenticar usuário que não existe', () => request(app).post('/auth/signin')
+  .send({ email: 'nao.existe@gmail.com', password: '123465' })
   .then((res) => {
-    expect(res.status).toBe(200);
-    console.log(res.body);
-    expect(res.body).toHaveProperty('token');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Usuário ou senha inválidos');
   }));
