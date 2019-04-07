@@ -1,6 +1,15 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
+test('Deve criar usuário usando signup', () => request(app).post('/auth/signup')
+  .send({ name: 'Williams', email: `${Date.now()}@gmail.com`, password: '123456' })
+  .then((res) => {
+    expect(res.status).toBe(201);
+    expect(res.body.name).toBe('Williams');
+    expect(res.body).toHaveProperty('email');
+    expect(res.body).not.toHaveProperty('password');
+  }));
+
 test('Deve receber token ao logar', () => {
   const email = `${Date.now()}@gmail.com`;
   const user = { name: 'Williams Gomes Silva', email, password: '123456' };
