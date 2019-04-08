@@ -4,7 +4,7 @@ module.exports = {
     version: '11.2',
     connection: {
       host: 'localhost',
-      user: 'williamsgomes',
+      user: 'postgres',
       password: '9655',
       database: 'barriga',
     },

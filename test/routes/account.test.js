@@ -4,17 +4,19 @@ const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/accounts';
-const email = `${Date.now()}@gmail.com`;
 let user;
+let user2;
 
-beforeAll(async () => {
-  const res = await app.services.user.save({ name: 'User Account', email, password: '123456' });
+beforeEach(async () => {
+  const res = await app.services.user.save({ name: 'User Account #1', email: `${Date.now()}@gmail.com`, password: '123456' });
   user = { ...res[0] };
   user.token = jwt.encode(user, 'Secreto!');
+  const res2 = await app.services.user.save({ name: 'User Account #2', email: `${Date.now()}2@gmail.com`, password: '123456' });
+  user2 = { ...res2[0] };
 });
 
 test('Deve inserir conta com sucesso', () => request(app).post(MAIN_ROUTE)
-  .send({ name: 'Acc 1', user_id: user.id })
+  .send({ name: 'Acc 1' })
   .set('authorization', `bearer ${user.token}`)
   .then((result) => {
     expect(result.status).toBe(201);
@@ -22,7 +24,7 @@ test('Deve inserir conta com sucesso', () => request(app).post(MAIN_ROUTE)
   }));
 
 test('Não deve inserir conta sem nome', () => request(app).post(MAIN_ROUTE)
-  .send({ user_id: user.id })
+  .send({})
   .set('authorization', `bearer ${user.token}`)
   .then((result) => {
     expect(result.status).toBe(400);
@@ -31,16 +33,17 @@ test('Não deve inserir conta sem nome', () => request(app).post(MAIN_ROUTE)
 
 test.skip('Não deve inserir uma conta de nome duplicado, para o mesmo usuário', () => {});
 
-test('Deve listar todas as contas', () => app.db('accounts')
-  .insert({ name: 'Acc list', user_id: user.id })
+test('Deve listar apenas as contas do usuário', () => app.db('accounts').insert([
+  { name: 'Acc User #1', user_id: user.id },
+  { name: 'Acc User #2', user_id: user2.id },
+])
   .then(() => request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${user.token}`))
   .then((res) => {
     expect(res.status).toBe(200);
-    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body.length).toBe(1);
+    expect(res.body[0].name).toBe('Acc User #1');
   }));
-
-test.skip('Deve listar apenas as contas do usuário', () => {});
 
 test('Deve retornar uma conta por id', () => app.db('accounts')
   .insert({ name: 'Acc by id', user_id: user.id }, ['id'])
