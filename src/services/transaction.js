@@ -5,8 +5,12 @@ module.exports = (app) => {
     .andWhere('accounts.user_id', '=', userId)
     .select();
 
+  const findOne = filter => app.db('transactions')
+    .where(filter)
+    .first();
+
   const save = transaction => app.db('transactions')
     .insert(transaction, '*');
 
-  return { find, save };
+  return { find, findOne, save };
 };
