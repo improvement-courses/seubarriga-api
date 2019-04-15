@@ -12,5 +12,11 @@ module.exports = (app) => {
   const save = transaction => app.db('transactions')
     .insert(transaction, '*');
 
-  return { find, findOne, save };
+  const update = (id, transaction) => app.db('transactions')
+    .where({ id })
+    .update(transaction, '*');
+
+  return {
+    find, findOne, save, update,
+  };
 };
