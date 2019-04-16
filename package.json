@@ -8,9 +8,11 @@
     "test": "jest",
     "lint": "eslint src/** test/** --fix",
     "secure-mode": "jest --watch --verbose=false",
-    "mig-m": "knex migrate:make --env test",
-    "mig-l": "knex migrate:latest --env test",
-    "mig-r": "knex migrate:rollback --env test"
+    "kmig-m": "knex migrate:make --env test",
+    "kmig-l": "knex migrate:latest --env test",
+    "kmig-r": "knex migrate:rollback --env test",
+    "kseed": "knex seed:make --env test",
+    "kseed-run": "knex seed:run --env test"
   },
   "keywords": [],
   "author": "",
