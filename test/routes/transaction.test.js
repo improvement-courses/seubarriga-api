@@ -29,10 +29,18 @@ beforeAll(async () => {
 test('Deve listar apenas as transações do usuário', () => app.db('transactions')
   .insert([
     {
-      description: 't1', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id,
+      description: 't1',
+      date: new Date(),
+      ammount: 100,
+      type: 'I',
+      acc_id: accUser.id,
     },
     {
-      description: 't2', date: new Date(), ammount: 100, type: 'I', acc_id: accUser2.id,
+      description: 't2',
+      date: new Date(),
+      ammount: 100,
+      type: 'I',
+      acc_id: accUser2.id,
     }])
   .then(() => request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${user.token}`)
@@ -67,7 +75,11 @@ test('Transações de entrada devem ser positivas', () => request(app).post(MAIN
 test('Transações de saída devem ser negativas', () => request(app).post(MAIN_ROUTE)
   .set('authorization', `bearer ${user.token}`)
   .send({
-    description: 'New T', date: new Date(), ammount: 100, type: 'O', acc_id: accUser.id,
+    description: 'New T',
+    date: new Date(),
+    ammount: 100,
+    type: 'O',
+    acc_id: accUser.id,
   })
   .then((res) => {
     expect(res.status).toBe(201);
@@ -79,7 +91,11 @@ describe('Ao tentar inserir uma transação inválida', () => {
   let validTransaction;
   beforeAll(() => {
     validTransaction = {
-      description: 'New T', date: new Date(), ammount: 100, type: 'O', acc_id: accUser.id,
+      description: 'New T',
+      date: new Date(),
+      ammount: 100,
+      type: 'O',
+      acc_id: accUser.id,
     };
   });
 
@@ -101,7 +117,11 @@ describe('Ao tentar inserir uma transação inválida', () => {
 
 test('Deve retornar uma transação por ID', () => app.db('transactions').insert(
   {
-    description: 'T ID', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id,
+    description: 'T ID',
+    date: new Date(),
+    ammount: 100,
+    type: 'I',
+    acc_id: accUser.id,
   }, ['id'],
 ).then(trans => request(app).get(`${MAIN_ROUTE}/${trans[0].id}`)
   .set('authorization', `bearer ${user.token}`)
@@ -113,7 +133,11 @@ test('Deve retornar uma transação por ID', () => app.db('transactions').insert
 
 test('Deve alterar uma transação', () => app.db('transactions').insert(
   {
-    description: 'To Update', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id,
+    description: 'To Update',
+    date: new Date(),
+    ammount: 100,
+    type: 'I',
+    acc_id: accUser.id,
   }, ['id'],
 ).then(trans => request(app).put(`${MAIN_ROUTE}/${trans[0].id}`)
   .set('authorization', `bearer ${user.token}`)
@@ -125,7 +149,11 @@ test('Deve alterar uma transação', () => app.db('transactions').insert(
 
 test('Deve remover uma transação', () => app.db('transactions').insert(
   {
-    description: 'To delete', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id,
+    description: 'To delete',
+    date: new Date(),
+    ammount: 100,
+    type: 'I',
+    acc_id: accUser.id,
   }, ['id'],
 ).then(trans => request(app).delete(`${MAIN_ROUTE}/${trans[0].id}`)
   .set('authorization', `bearer ${user.token}`)
@@ -135,7 +163,11 @@ test('Deve remover uma transação', () => app.db('transactions').insert(
 
 test('Não Deve remover uma transação de outro usuário', () => app.db('transactions').insert(
   {
-    description: 'To delete', date: new Date(), ammount: 100, type: 'I', acc_id: accUser2.id,
+    description: 'To delete',
+    date: new Date(),
+    ammount: 100,
+    type: 'I',
+    acc_id: accUser2.id,
   }, ['id'],
 ).then(trans => request(app).delete(`${MAIN_ROUTE}/${trans[0].id}`)
   .set('authorization', `bearer ${user.token}`)
@@ -146,7 +178,11 @@ test('Não Deve remover uma transação de outro usuário', () => app.db('transa
 
 test('Não deve remover conta com transação', () => app.db('transactions').insert(
   {
-    description: 'To not delete account with transaction', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id,
+    description: 'To not delete account with transaction',
+    date: new Date(),
+    ammount: 100,
+    type: 'I',
+    acc_id: accUser.id,
   }, ['id'],
 ).then(() => request(app).delete(`/v1/accounts/${accUser.id}`)
   .set('authorization', `bearer ${user.token}`)
