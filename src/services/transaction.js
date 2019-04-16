@@ -1,3 +1,5 @@
+const ValidationError = require('../errors/ValidationError');
+
 module.exports = (app) => {
   const find = (userId, filter = {}) => app.db('transactions')
     .join('accounts', 'accounts.id', 'acc_id')
@@ -10,6 +12,9 @@ module.exports = (app) => {
     .first();
 
   const save = (transaction) => {
+    if (!transaction.description) throw new ValidationError('Descrição é uma atributo obrigatório!');
+    if (!transaction.ammount) throw new ValidationError('Valor é um atributo obrigatório!');
+
     const newTransaction = { ...transaction };
     if ((transaction.type === 'I' && transaction.ammount < 0)
       || (transaction.type === 'O' && transaction.ammount > 0)) {

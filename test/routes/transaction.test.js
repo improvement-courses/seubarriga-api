@@ -53,6 +53,52 @@ test('Deve inserir transação com sucesso', () => request(app).post(MAIN_ROUTE)
     expect(res.body.ammount).toBe('100.00');
   }));
 
+test('Transações de entrada devem ser positivas', () => request(app).post(MAIN_ROUTE)
+  .set('authorization', `bearer ${user.token}`)
+  .send({
+    description: 'New T', date: new Date(), ammount: -100, type: 'I', acc_id: accUser.id,
+  })
+  .then((res) => {
+    expect(res.status).toBe(201);
+    expect(res.body.acc_id).toBe(accUser.id);
+    expect(res.body.ammount).toBe('100.00');
+  }));
+
+test('Transações de saída devem ser negativas', () => request(app).post(MAIN_ROUTE)
+  .set('authorization', `bearer ${user.token}`)
+  .send({
+    description: 'New T', date: new Date(), ammount: 100, type: 'O', acc_id: accUser.id,
+  })
+  .then((res) => {
+    expect(res.status).toBe(201);
+    expect(res.body.acc_id).toBe(accUser.id);
+    expect(res.body.ammount).toBe('-100.00');
+  }));
+
+test('Não deve inserir uma transação sem descrição', () => request(app).post(MAIN_ROUTE)
+  .set('authorization', `bearer ${user.token}`)
+  .send({
+    date: new Date(), ammount: 100, type: 'O', acc_id: accUser.id,
+  })
+  .then((res) => {
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Descrição é uma atributo obrigatório!');
+  }));
+
+test('Não deve inserir uma transação sem valor', () => request(app).post(MAIN_ROUTE)
+  .set('authorization', `bearer ${user.token}`)
+  .send({
+    description: 'New T', date: new Date(), type: 'O', acc_id: accUser.id,
+  })
+  .then((res) => {
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Valor é um atributo obrigatório!');
+  }));
+test.skip('Não deve inserir uma transação sem data', () => {});
+test.skip('Não deve inserir uma transação sem conta', () => {});
+test.skip('Não deve inserir uma transação sem tipo', () => {});
+test.skip('Não deve inserir uma transação com tipo inválido', () => {});
+
 test('Deve retornar uma transação por ID', () => app.db('transactions').insert(
   {
     description: 'T ID', date: new Date(), ammount: 100, type: 'I', acc_id: accUser.id,
@@ -97,25 +143,3 @@ test('Não Deve remover uma transação de outro usuário', () => app.db('transa
     expect(res.status).toBe(403);
     expect(res.body.error).toBe('Este recurso não pertence ao usuário!');
   })));
-
-test('Transações de entrada devem ser positivas', () => request(app).post(MAIN_ROUTE)
-  .set('authorization', `bearer ${user.token}`)
-  .send({
-    description: 'New T', date: new Date(), ammount: -100, type: 'I', acc_id: accUser.id,
-  })
-  .then((res) => {
-    expect(res.status).toBe(201);
-    expect(res.body.acc_id).toBe(accUser.id);
-    expect(res.body.ammount).toBe('100.00');
-  }));
-
-test('Transações de saída devem ser negativas', () => request(app).post(MAIN_ROUTE)
-  .set('authorization', `bearer ${user.token}`)
-  .send({
-    description: 'New T', date: new Date(), ammount: 100, type: 'O', acc_id: accUser.id,
-  })
-  .then((res) => {
-    expect(res.status).toBe(201);
-    expect(res.body.acc_id).toBe(accUser.id);
-    expect(res.body.ammount).toBe('-100.00');
-  }));
