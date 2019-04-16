@@ -9,8 +9,16 @@ module.exports = (app) => {
     .where(filter)
     .first();
 
-  const save = transaction => app.db('transactions')
-    .insert(transaction, '*');
+  const save = (transaction) => {
+    const newTransaction = { ...transaction };
+    if ((transaction.type === 'I' && transaction.ammount < 0)
+      || (transaction.type === 'O' && transaction.ammount > 0)) {
+      newTransaction.ammount *= -1;
+    }
+
+    return app.db('transactions')
+      .insert(newTransaction, '*');
+  };
 
   const update = (id, transaction) => app.db('transactions')
     .where({ id })
