@@ -16,7 +16,11 @@ module.exports = (app) => {
     .where({ id })
     .update(transaction, '*');
 
+  const remove = id => app.db('transactions')
+    .where({ id })
+    .del();
+
   return {
-    find, findOne, save, update,
+    find, findOne, save, update, remove,
   };
 };

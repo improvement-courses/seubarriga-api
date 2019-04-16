@@ -1,0 +1,57 @@
+{
+	// Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	"Log to console": {
+		"prefix": "clg",
+		"body": [
+			"console.log($1)"
+		],
+		"description": "Console.log..."
+	},
+	"Test method": {
+		"prefix": "tst",
+		"body": [
+			"test('$1', () => {",
+			"\t$0",
+			"});"
+		],
+		"description": "Test method template"
+	},
+	"Expect status": {
+		"prefix": "estatus",
+		"body": "expect(res.status).toBe(${1:200});",
+		"description": "Expect a defined status code"
+	},
+	"Expect body": {
+		"prefix": "ebody",
+		"body": "expect(res.body$1).toBe($2);",
+		"description": "Expect some value from body"
+	},
+	"Supertest request": {
+		"prefix": "reqtest",
+		"body": [
+			"request(app).${1:get}(${2:MAIN_ROUTE})",
+			"\t.set('authorization', `bearer ${$3}`)",
+			"\t.then((res) => {",
+			"\t$0",
+			"\t});"
+		],
+		"description": "A default request using supertest"
+	},
+	"Router method": {
+		"prefix": "router",
+		"body": [
+			"router.${1:get}('${2:/}', (req, res, next) => {",
+			"\t$0",
+			"});"	
+		],
+		"description": "A default router method"
+	},
+	"Catch to express": {
+		"prefix": "catch",
+		"body": ".catch(err => next(err));",
+		"description": "Sevd errors to express"
+	}
+}
