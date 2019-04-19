@@ -82,7 +82,12 @@ module.exports = (app) => {
     return result;
   };
 
+  const remove = async (id) => {
+    await app.db('transactions').where({ transfer_id: id }).del();
+    return app.db('transfers').where({ id }).del();
+  };
+
   return {
-    find, findOne, save, update, validate,
+    find, findOne, save, update, validate, remove,
   };
 };

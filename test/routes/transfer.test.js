@@ -203,3 +203,19 @@ describe('Ao tentar alterar uma transferência inválida...', () => {
   test('Não deve inserir se as contas de origem e destino forem as mesmas', () => testTemplate({ acc_dest_id: 10000 }, 'Não é possível transferir para a mesma conta!'));
   test('Não deve inserir se as contas pertencerem a outro usuário', () => testTemplate({ acc_ori_id: 10002 }, 'Conta #10002 não pertence ao usuário!'));
 });
+
+describe('Ao remover uma transferência...', () => {
+  test('Deve retornar o status 204', () => request(app).delete(`${MAIN_ROUTE}/10000`)
+    .set('authorization', `bearer ${TOKEN}`)
+    .then((res) => {
+      expect(res.status).toBe(204);
+    }));
+
+  test('O registro deve ter sido removido do banco', () => app.db('transfers').where({ id: 10000 })
+    .then(result => expect(result).toHaveLength(0)));
+
+  test('As transações associadas devem ter sido removidas', () => app.db('transactions').where({ transfer_id: 10000 })
+    .then((result) => {
+      expect(result).toHaveLength(0);
+    }));
+});
