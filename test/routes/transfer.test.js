@@ -92,6 +92,34 @@ describe('Ao salvar uma transferência válida...', () => {
   });
 });
 
+describe('Ao tentar salvar uma transferência inválida...', () => {
+  let validTransfer;
+  beforeAll(() => {
+    validTransfer = {
+      description: 'Regular transfer',
+      user_id: 10000,
+      acc_ori_id: 10000,
+      acc_dest_id: 10001,
+      date: new Date(),
+      ammount: 100,
+    };
+  });
+  const testTemplate = (newData, errorMessage) => request(app).post(MAIN_ROUTE)
+    .set('authorization', `bearer ${TOKEN}`)
+    .send({ ...validTransfer, ...newData })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe(errorMessage);
+    });
+  test('Não deve inserir sem descrição', () => testTemplate({ description: null }, 'Descrição é um atributo obrigatório!'));
+  test('Não deve inserir sem valor', () => testTemplate({ ammount: null }, 'Valor é um atributo obrigatório!'));
+  test('Não deve inserir sem data', () => testTemplate({ date: null }, 'Data é um atributo obrigatório!'));
+  test('Não deve inserir sem conta de origem', () => testTemplate({ acc_ori_id: null }, 'Conta de origem é um atributo obrigatório!'));
+  test('Não deve inserir sem conta de destino', () => testTemplate({ acc_dest_id: null }, 'Conta de destino é um atributo obrigatório!'));
+  test('Não deve inserir se as contas de origem e destino forem as mesmas', () => testTemplate({ acc_dest_id: 10000 }, 'Não é possível transferir para a mesma conta!'));
+  test('Não deve inserir se as contas pertencerem a outro usuário', () => testTemplate({ acc_ori_id: 10002 }, 'Conta #10002 não pertence ao usuário!'));
+});
+
 test('Deve retornar uma transferência por id', () => request(app).get(`${MAIN_ROUTE}/10000`)
   .set('authorization', `bearer ${TOKEN}`)
   .then((res) => {
@@ -148,7 +176,7 @@ describe('Ao alterar uma transferência válida...', () => {
   });
 });
 
-describe('Ao tentar salvar uma transferência inválida...', () => {
+describe('Ao tentar alterar uma transferência inválida...', () => {
   let validTransfer;
   beforeAll(() => {
     validTransfer = {
