@@ -4,8 +4,8 @@ const moment = require('moment');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/balance';
-const ROTE_TRANSACTION = '/v1/transactions';
-const ROTE_TRANSFER = '/v1/transfers';
+const ROUTE_TRANSACTION = '/v1/transactions';
+const ROUTE_TRANSFER = '/v1/transfers';
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAxMDAsIm5hbWUiOiJVc2VyICMzIiwiZW1haWwiOiJ1c2VyM0BnbWFpbC5jb20ifQ.kV_Uo2HKKnq-rJhAuRy2_vkX3fHmBLHHLMhlN-aUJbw';
 
 beforeAll(async () => {
@@ -20,7 +20,7 @@ describe('Ao calcular o saldo do usuário...', () => {
       expect(res.body).toHaveLength(0);
     }));
 
-  test('Deve adicionar valores de entrada', () => request(app).post(ROTE_TRANSACTION)
+  test('Deve adicionar valores de entrada', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: new Date(),
@@ -40,7 +40,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[0].sum).toBe('100.00');
       })));
 
-  test('Deve subtrair valores de saída', () => request(app).post(ROTE_TRANSACTION)
+  test('Deve subtrair valores de saída', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: new Date(),
@@ -59,7 +59,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[0].sum).toBe('-100.00');
       })));
 
-  test('Não deve considerar transações pendentes', () => request(app).post(ROTE_TRANSACTION)
+  test('Não deve considerar transações pendentes', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: new Date(),
@@ -78,7 +78,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[0].sum).toBe('-100.00');
       })));
 
-  test('Não deve considerar saldos de contas distintas', () => request(app).post(ROTE_TRANSACTION)
+  test('Não deve considerar saldos de contas distintas', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: new Date(),
@@ -99,7 +99,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[1].sum).toBe('50.00');
       })));
 
-  test('Não deve considerar saldos de contas de outros usuários', () => request(app).post(ROTE_TRANSACTION)
+  test('Não deve considerar saldos de contas de outros usuários', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: new Date(),
@@ -120,7 +120,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[1].sum).toBe('50.00');
       })));
 
-  test('Deve considerar transação passada', () => request(app).post(ROTE_TRANSACTION)
+  test('Deve considerar transação passada', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: moment().subtract({ days: 5 }),
@@ -141,7 +141,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[1].sum).toBe('50.00');
       })));
 
-  test('Não deve considerar transações futuras', () => request(app).post(ROTE_TRANSACTION)
+  test('Não deve considerar transações futuras', () => request(app).post(ROUTE_TRANSACTION)
     .send({
       description: '1',
       date: moment().add({ days: 5 }),
@@ -162,7 +162,7 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[1].sum).toBe('50.00');
       })));
 
-  test('Deve considerar transferências', () => request(app).post(ROTE_TRANSFER)
+  test('Deve considerar transferências', () => request(app).post(ROUTE_TRANSFER)
     .send({
       description: '1',
       date: new Date(),

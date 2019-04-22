@@ -1,4 +1,3 @@
-
 exports.seed = knex => knex('transactions').del()
   .then(() => knex('transfers').del())
   .then(() => knex('accounts').del())
@@ -49,7 +48,7 @@ exports.seed = knex => knex('transactions').del()
   .then(() => knex('transactions')
     .insert([
       {
-        description: 'Transfer from  AccO #1',
+        description: 'Transfer from AccO #1',
         date: new Date(),
         ammount: 100,
         type: 'I',
@@ -57,7 +56,7 @@ exports.seed = knex => knex('transactions').del()
         transfer_id: 10000,
       },
       {
-        description: 'Transfer to  AccD #1',
+        description: 'Transfer to AccD #1',
         date: new Date(),
         ammount: -100,
         type: 'O',
@@ -65,7 +64,7 @@ exports.seed = knex => knex('transactions').del()
         transfer_id: 10000,
       },
       {
-        description: 'Transfer from  AccO #2',
+        description: 'Transfer from AccO #2',
         date: new Date(),
         ammount: 100,
         type: 'I',
@@ -73,7 +72,7 @@ exports.seed = knex => knex('transactions').del()
         transfer_id: 10001,
       },
       {
-        description: 'Transfer to  AccO #2',
+        description: 'Transfer to AccD #2',
         date: new Date(),
         ammount: -100,
         type: 'O',
