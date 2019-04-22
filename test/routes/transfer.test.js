@@ -177,6 +177,7 @@ describe('Ao alterar uma transferência válida...', () => {
 });
 
 describe('Ao tentar alterar uma transferência inválida...', () => {
+<<<<<<< HEAD
   const validTransfer = {
     description: 'Regular transfer',
     user_id: 10000,
@@ -187,6 +188,20 @@ describe('Ao tentar alterar uma transferência inválida...', () => {
   };
 
   const testTemplate = (newData, errorMessage) => request(app).post(MAIN_ROUTE)
+=======
+  let validTransfer;
+  beforeAll(() => {
+    validTransfer = {
+      description: 'Regular transfer',
+      user_id: 10000,
+      acc_ori_id: 10000,
+      acc_dest_id: 10001,
+      date: new Date(),
+      ammount: 100,
+    };
+  });
+  const testTemplate = (newData, errorMessage) => request(app).put(`${MAIN_ROUTE}/10000`)
+>>>>>>> 5d2d4e39a159f88297a62b5217ccbb4ce5b06181
     .set('authorization', `bearer ${TOKEN}`)
     .send({ ...validTransfer, ...newData })
     .then((res) => {
@@ -201,3 +216,29 @@ describe('Ao tentar alterar uma transferência inválida...', () => {
   test('Não deve inserir se as contas de origem e destino forem as mesmas', () => testTemplate({ acc_dest_id: 10000 }, 'Não é possível transferir para a mesma conta!'));
   test('Não deve inserir se as contas pertencerem a outro usuário', () => testTemplate({ acc_ori_id: 10002 }, 'Conta #10002 não pertence ao usuário!'));
 });
+<<<<<<< HEAD
+=======
+
+describe('Ao remover uma transferência...', () => {
+  test('Deve retornar o status 204', () => request(app).delete(`${MAIN_ROUTE}/10000`)
+    .set('authorization', `bearer ${TOKEN}`)
+    .then((res) => {
+      expect(res.status).toBe(204);
+    }));
+
+  test('O registro deve ter sido removido do banco', () => app.db('transfers').where({ id: 10000 })
+    .then(result => expect(result).toHaveLength(0)));
+
+  test('As transações associadas devem ter sido removidas', () => app.db('transactions').where({ transfer_id: 10000 })
+    .then((result) => {
+      expect(result).toHaveLength(0);
+    }));
+});
+
+test('Não deve retornar transferência de outro usuário', () => request(app).get(`${MAIN_ROUTE}/10001`)
+  .set('authorization', `bearer ${TOKEN}`)
+  .then((res) => {
+    expect(res.status).toBe(403);
+    expect(res.body.error).toBe('Este recurso não pertence ao usuário!');
+  }));
+>>>>>>> 5d2d4e39a159f88297a62b5217ccbb4ce5b06181

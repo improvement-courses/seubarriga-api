@@ -1,7 +1,7 @@
 module.exports = {
   test: {
     client: 'pg',
-    version: '10',
+    version: '10.2',
     connection: {
       host: 'localhost',
       user: 'postgres',
