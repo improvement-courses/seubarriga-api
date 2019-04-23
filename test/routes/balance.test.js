@@ -33,7 +33,6 @@ describe('Ao calcular o saldo do usuário...', () => {
     .then(() => request(app).get(MAIN_ROUTE)
       .set('authorization', `bearer ${TOKEN}`)
       .then((res) => {
-        console.log(res.body);
         expect(res.status).toBe(200);
         expect(res.body).toHaveLength(1);
         expect(res.body[0].id).toBe(10100);
