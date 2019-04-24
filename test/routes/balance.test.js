@@ -7,6 +7,7 @@ const MAIN_ROUTE = '/v1/balance';
 const ROUTE_TRANSACTION = '/v1/transactions';
 const ROUTE_TRANSFER = '/v1/transfers';
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAxMDAsIm5hbWUiOiJVc2VyICMzIiwiZW1haWwiOiJ1c2VyM0BnbWFpbC5jb20ifQ.kV_Uo2HKKnq-rJhAuRy2_vkX3fHmBLHHLMhlN-aUJbw';
+const TOKEN_GERAL = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAxMDIsIm5hbWUiOiJVc2VyICM1IiwiZW1haWwiOiJ1c2VyNUBnbWFpbC5jb20ifQ.8SaTFqxukVtQSfCiSj6qgTXvVjheFq7-7xRQ2dYFDEQ';
 
 beforeAll(async () => {
   await app.db.seed.run();
@@ -181,3 +182,14 @@ describe('Ao calcular o saldo do usuário...', () => {
         expect(res.body[1].sum).toBe('200.00');
       })));
 });
+
+test('Deve calcular saldo das contas do usuário', () => request(app).get(MAIN_ROUTE)
+  .set('authorization', `bearer ${TOKEN_GERAL}`)
+  .then((res) => {
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(2);
+    expect(res.body[0].id).toBe(10104);
+    expect(res.body[0].sum).toBe('162.00');
+    expect(res.body[1].id).toBe(10105);
+    expect(res.body[1].sum).toBe('-248.00');
+  }));
