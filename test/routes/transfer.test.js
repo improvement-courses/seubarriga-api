@@ -86,9 +86,14 @@ describe('Ao salvar uma transferência válida...', () => {
     expect(income.type).toBe('I');
   });
 
-  test('Ambas deve, referenciar a trasferência que as originou', () => {
+  test('Ambas devem, referenciar a trasferência que as originou', () => {
     expect(income.transfer_id).toBe(transferId);
     expect(outcome.transfer_id).toBe(transferId);
+  });
+
+  test('Ambas devem estar com status de realizadas', () => {
+    expect(income.status).toBe(true);
+    expect(outcome.status).toBe(true);
   });
 });
 

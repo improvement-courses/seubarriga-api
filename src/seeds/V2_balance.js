@@ -34,7 +34,7 @@ exports.seed = knex => knex('users')
       {
         id: 10100,
         description: 'Transfer #1',
-        user_id: 10000,
+        user_id: 10102,
         acc_ori_id: 10105,
         acc_dest_id: 10104,
         date: new Date(),
