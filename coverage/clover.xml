@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1556132389859" clover="3.2.0">
-  <project timestamp="1556132389859" name="All files">
-    <metrics statements="287" coveredstatements="267" conditionals="70" coveredconditionals="64" methods="125" coveredmethods="108" elements="482" coveredelements="439" complexity="0" loc="287" ncloc="287" packages="7" files="20" classes="20">
+<coverage generated="1556136635126" clover="3.2.0">
+  <project timestamp="1556136635126" name="All files">
+    <metrics statements="286" coveredstatements="268" conditionals="70" coveredconditionals="64" methods="125" coveredmethods="108" elements="481" coveredelements="440" complexity="0" loc="286" ncloc="286" packages="7" files="20" classes="20">
       <package name="seubarriga">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <file name="knexfile.js" path="C:\Users\williams.silva\Documents\projects\js\seubarriga\knexfile.js">
@@ -10,25 +10,24 @@
         </file>
       </package>
       <package name="seubarriga.src">
-        <metrics statements="16" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <metrics statements="15" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
         <file name="app.js" path="C:\Users\williams.silva\Documents\projects\js\seubarriga\src\app.js">
-          <metrics statements="16" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+          <metrics statements="15" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
           <line num="1" count="7" type="stmt"/>
           <line num="2" count="7" type="stmt"/>
           <line num="3" count="7" type="stmt"/>
           <line num="4" count="7" type="stmt"/>
-          <line num="7" count="7" type="stmt"/>
-          <line num="9" count="7" type="stmt"/>
-          <line num="17" count="7" type="stmt"/>
-          <line num="18" count="1" type="stmt"/>
-          <line num="21" count="7" type="stmt"/>
-          <line num="22" count="34" type="stmt"/>
-          <line num="23" count="34" type="cond" truecount="2" falsecount="0"/>
-          <line num="24" count="5" type="cond" truecount="1" falsecount="1"/>
-          <line num="26" count="0" type="stmt"/>
-          <line num="27" count="0" type="stmt"/>
-          <line num="29" count="34" type="stmt"/>
-          <line num="37" count="7" type="stmt"/>
+          <line num="6" count="7" type="stmt"/>
+          <line num="8" count="7" type="stmt"/>
+          <line num="10" count="7" type="stmt"/>
+          <line num="18" count="7" type="stmt"/>
+          <line num="19" count="1" type="stmt"/>
+          <line num="22" count="7" type="stmt"/>
+          <line num="23" count="34" type="stmt"/>
+          <line num="24" count="34" type="cond" truecount="2" falsecount="0"/>
+          <line num="25" count="5" type="cond" truecount="1" falsecount="1"/>
+          <line num="30" count="34" type="stmt"/>
+          <line num="38" count="7" type="stmt"/>
         </file>
       </package>
       <package name="seubarriga.src.config">

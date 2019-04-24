@@ -17,18 +17,26 @@
     }
   },
   "scripts": {
-    "start": "node src/server.js",
-    "test": "jest --coverage --runInBand --detectOpenHandles",
+    "start": "cross-env NODE_ENV=prod node src/server.js",
+    "test": "cross-env NODE_ENV=test jest --coverage --runInBand --forceExit",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watch --verbose=true --runInBand --detectOpenHandles",
-    "kmig-m": "knex migrate:make --env test",
-    "kmig-l": "knex migrate:latest --env test",
-    "kmig-r": "knex migrate:rollback --env test",
+    "secure-mode": "cross-env NODE_ENV=test jest --watch --verbose=true --runInBand",
+    "kmig-m-test": "knex migrate:make --env test",
+    "kmig-l-test": "knex migrate:latest --env test",
+    "kmig-r-test": "knex migrate:rollback --env test",
+    "kmig-m-prod": "knex migrate:make --env prod",
+    "kmig-l-prod": "knex migrate:latest --env prod",
+    "kmig-r-prod": "knex migrate:rollback --env prod",
     "kseed": "knex seed:make --env test",
     "kseed-run": "knex seed:run --env test"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test"
+    }
+  },
   "keywords": [],
-  "author": "",
+  "author": "Williams Gomes <williamsgomes45@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^5.15.3",
@@ -41,13 +49,17 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.18.3",
     "consign": "0.1.6",
+    "cross-env": "^5.2.0",
     "express": "4.16.4",
+    "husky": "1.2.0",
     "jwt-simple": "0.5.5",
     "knex": "0.15.2",
     "knex-logger": "^0.1.0",
     "moment": "2.22.2",
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
-    "pg": "7.7.1"
+    "pg": "7.7.1",
+    "uuidv4": "2.0.0",
+    "winston": "3.1.0"
   }
 }

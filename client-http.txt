@@ -1,0 +1,38 @@
+GET http://localhost:3001/v2/users
+
+###
+
+POST http://localhost:3001/auth/signup
+content-type: application/json
+
+{
+  "name": "Williams Gomes",
+  "email": "williamsgomes@gmail.com",
+  "password": "9655"
+}
+
+###
+
+POST http://localhost:3001/auth/signin
+content-type: application/json
+
+{
+  "email": "williamsgomes45@gmail.com",
+  "password": "9655"
+}
+
+###
+
+GET http://localhost:3001/v1/accounts
+content-type: application/json
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IldpbGxpYW1zIEdvbWVzIiwiZW1haWwiOiJ3aWxsaWFtc2dvbWVzNDVAZ21haWwuY29tIn0.qOXekhquZ-d2RzTVdA5yG2EzV0i4HmuiISqVIjC7vq8
+
+###
+
+POST http://localhost:3001/v1/accounts
+content-type: application/json
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IldpbGxpYW1zIEdvbWVzIiwiZW1haWwiOiJ3aWxsaWFtc2dvbWVzNDVAZ21haWwuY29tIn0.qOXekhquZ-d2RzTVdA5yG2EzV0i4HmuiISqVIjC7vq8
+
+{
+  "name": "ACC123"
+}
