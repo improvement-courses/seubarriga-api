@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">86.96% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>17/17</span>
+        <span class='fraction'>20/23</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">75% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">85.71% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>15/15</span>
+        <span class='fraction'>18/21</span>
       </div>
     </div>
   </div>
@@ -81,7 +81,26 @@
 36
 37
 38
-39</td><td class="line-coverage quiet"><span class="cline-any cline-yes">7x</span>
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56</td><td class="line-coverage quiet"><span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -89,6 +108,16 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -100,6 +129,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
@@ -107,8 +137,12 @@
 <span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,11 +156,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const app = require('express')();
 const consign = require('consign');
 const knex = require('knex');
+const winston = require('winston');
+const uuid = require('uuidv4');
 const knexfile = require('../knexfile');
 &nbsp;
 app.db = knex(knexfile[process.env.NODE_ENV]);
 &nbsp;
-console.log(process.env.NODE_ENV);
+app.log = winston.createLogger({
+  level: 'debug',
+  transports: [
+    new winston.transports.Console({ format: winston.format.json({ space: 1 }) }),
+    new winston.transports.File({
+      filename: 'logs/error.log',
+      level: 'warn',
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json({ space: 1 })),
+    }),
+  ],
+});
 &nbsp;
 consign({ cwd: 'src', verbose: false })
   .include('./config/passport.js')
@@ -137,6 +183,7 @@ consign({ cwd: 'src', verbose: false })
   .into(app);
 &nbsp;
 app.get('/', (req, res) =&gt; {
+  app.log.debug('Passei Aqui');
   res.status(200).send();
 });
 &nbsp;
@@ -145,8 +192,12 @@ app.use((err, req, res, next) =&gt; {
   if (name === 'ValidationError') res.status(400).json({ error: message });
   else <span class="missing-if-branch" title="else path not taken" >E</span>if (name === 'RecursoIndevidoError') res.status(403).json({ error: message });
   else {
+    const id = <span class="cstat-no" title="statement not covered" >uuid();</span>
     // console.log(message);
-    // res.status(500).json({ name, message, stack });
+<span class="cstat-no" title="statement not covered" >    app.log.warn({</span>
+      id, name, message, stack,
+    });
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ id, error: 'Falha Interna' });</span>
   }
   next();
 });
@@ -163,7 +214,7 @@ module.exports = app;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Apr 24 2019 17:10:34 GMT-0300 (GMT-03:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Apr 24 2019 18:22:13 GMT-0300 (GMT-03:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
